@@ -5,25 +5,23 @@ import * as router from "react-router-dom";
 
 describe("<App />", () => {
   it("renders", () => {
-    const spyOnNavigate = () => {
-      console.log("spyOnNavigate stub");
-      // cy.spy(router, "useNavigate").as("navigate");
-
-      cy.stub(router, 'useNavigate').returns(() => {});
-
-      // TODO: almost there I think
-    };
-
     mount(
-      <router.MemoryRouter>
-        {spyOnNavigate()}
-        <App />
+      <router.MemoryRouter router={router}>
+        <router.Routes>
+          <router.Route
+            path={"/"}
+            element={<App />}
+          />
+          <router.Route
+            path={"/subpage"}
+            element={<>Subpage</>}
+          />
+        </router.Routes>
       </router.MemoryRouter>
     );
 
     cy.get("button").click();
 
-    // cy.get("@navigate").should("be.called");
-    cy.get('@useNavigate').should('have.been.calledOnce');
+    cy.contains('Subpage');
   });
 });
