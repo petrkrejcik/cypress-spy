@@ -1,18 +1,20 @@
 import React from "react";
 import App from "./App";
-import * as router from "react-router-dom";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 
 describe("<App />", () => {
   it("renders", () => {
-    cy.spy(router, "useNavigate").as("navigate");
     cy.mount(
-      <router.MemoryRouter>
-        <App />
-      </router.MemoryRouter>
+      <MemoryRouter>
+        <Routes>
+          <Route path={"/"} element={<App />} />
+          <Route path={"/subpage"} element={<>Subpage</>} />
+        </Routes>
+      </MemoryRouter>
     );
 
     cy.get("button").click();
-    
-    cy.get("@navigate").should("be.called");
+
+    cy.contains("Subpage");
   });
 });
